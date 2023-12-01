@@ -33,7 +33,6 @@ for include_number_strings in [False, True]:
     with (open('day1.txt', 'rt') as f):
         line = f.readline()
         while line != '':
-            chars = list(line.strip())
             first, last = get_first_and_last(line, include_number_strings=include_number_strings)
             sum += first * 10 + last
             line = f.readline()
