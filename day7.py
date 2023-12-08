@@ -133,15 +133,9 @@ for jwild in [False, True]:
     Hand.jwild = jwild
     Hand.card_labels = 'AKQT98765432J' if Hand.jwild else 'AKQJT98765432'
 
-    hand_strs = []
-    bids = []
-    for line in lines:
-        hand_strs.append(line.split()[0].strip())
-        bids.append(line.split()[1].strip())
-
     hand_bids = []
-    for hand_str, bid in zip(hand_strs, bids):
-        hand_bids.append(HandBid(hand_str, bid))
+    for line in lines:
+        hand_bids.append(HandBid(line.split()[0].strip(), line.split()[1].strip()))
     hand_bids.sort()
 
     total = 0
