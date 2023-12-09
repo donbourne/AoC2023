@@ -28,13 +28,7 @@ def steps_to_x(x, current_node):
     return num_steps
 
 
-def steps_to_zzz(current_node):
-    return steps_to_x(lambda x: x == 'ZZZ', current_node)
-
-
 def part_2():
-    num_steps = 0
-    all_at_z = False
     current_nodes = [node for node in node_map.keys() if node[2] == 'A']
     steps_to_z = []
     for node in current_nodes:
@@ -43,5 +37,5 @@ def part_2():
     return math.lcm(*steps_to_z)
 
 
-print(steps_to_zzz('AAA'))
+print(steps_to_x(lambda x: x == 'ZZZ', 'AAA'))
 print(part_2())
