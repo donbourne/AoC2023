@@ -13,9 +13,10 @@ Part 2:
 
 double the input map width and height by inserting rows/columns of #s
 change loop following algorithm to insert | or -, as appropriate, when encountering #s
+fill in loop tiles with L's
 fill outside loop with X's, filling all adjacent tiles that aren't part of the loop
 scale input map back down to normal size
-enclosed area = total area - X area - loop area
+enclosed area = count of tiles without X or L filled in
 '''
 from collections import namedtuple
 
