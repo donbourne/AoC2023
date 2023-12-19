@@ -1,51 +1,43 @@
 '''
 heat_map = the input map showing how much heat is lost by entering a space
-tot_heat_map[0..2, dir] = the min possible total heat loss from each space to the finish for case where you have
-                  0..2 straight moves allowed after entering that space and have last moved in direction dir
+total_heat_map = map showing amount of heat lost along path from start space up to and including each space
 
-
-populate tot_heat_map[0] value is min(tot_heat_map[2] for adjacent spaces not in reverse nor dir directions)
-populate tot_heat_map[1] value is min(tot_heat_map[2] for adjacent spaces not in reverse nor dir directions, tot_heat_map[0] for space in dir direction)
-populate tot_heat_map[2] value is min(tot_heat_map[2] for adjacent spaces not in reverse nor dir directions, tot_heat_map[1] for space in dir direction)
-
-
-fill:
+fill(disallowed_moves_list=None):
     fill in bottom right corner with corresponding value from heat map
     create candidate list (list of filled spaces with unfilled adjacent spaces)
     while not done
-        sort candidate list by value
-        pop candidate with the lowest value
-        fill in values for spaces adjacent to candidate by adding heat map value of each adjacent space to candidate value
-        add newly filled spaces to candidate list
+        sort candidate list by total_heat value
+        pop candidate C with the lowest total_heat value
+        for each unfilled adjacent space A next to C:
+            if space and dir relative to C is not on disallowed_move_list:
+                fill in value for A by adding heat map value of A to total_heat value of C
+                add A to candidate list
 
-fill (0, right):
-    fill in bottom right corner with corresponding value from heat map
-    create candidate list (list of filled spaces with unfilled adjacent spaces)
-    while not done
-        sort candidate list by value
-        pop candidate with the lowest value
-        fill in values for ABOVE/BELOW spaces that are adjacent to candidate by adding heat map value of each adjacent space to candidate value
-        add newly filled spaces to candidate list
+    when filling each space, keep track of:
+        total_heat - the total heat value as measured from the start space
+        dir_moved - the direction moved from the previous space into this space
+        num_dir_moves - the number of consecutive moves in the direction dir_moved after space is filled
 
+    during fill, upon reaching a point where we have hit max moves in direction D:
+        choose best of 4 options for what value at end space would be with board filled from scratch with the following restrictions set separately:
+            not allowing 4th move in direction D
+            not allowing 3rd move in direction D
+            not allowing 2nd move in direction D
+            not allowing 1st move in direction D
+        note that filling rest of the board may result in other situations where the max moves limit is reached, so
+        it's necessary to keep a list of disallowed_move_lists. where it is necessary to disallow multiple moves on the
+        same board fill, add the permutations to the list:
+            [((5,5), UP), ((2,1), UP)]
+            [((6,5), UP), ((2,1), UP)]
+            [((7,5), UP), ((2,1), UP)]
+            [((8,5), UP), ((2,1), UP)]
 
+            [((5,5), UP), ((3,1), UP)]
+            [((6,5), UP), ((3,1), UP)]
+            [((7,5), UP), ((3,1), UP)]
+            [((8,5), UP), ((3,1), UP)]
+            ...
 
-0, right -
-
-instead of adjacent...
-next valid
-    0, increasing col - increase / decrease row
-    0, decreasing col - increase / decrease row
-    0, increasing row - increase / decrease col
-    0, decreasing row - increase / decrease col
-
-
-0R = min(3U, 3D)
-
-3U = min(2U, 3L, 3R)
-2U = min(1U, 3L, 3R)
-1U = min(0U, 3L, 3R)
-0U = min(3L, 3R)
-
-
-
+        disallowed_move_list = list of (coordinates (R, C), direction D)
+            eg. ((5,5), UP) means setting value at (4,5) based on value of (5,5) is not allowed
 '''
