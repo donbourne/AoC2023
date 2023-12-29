@@ -27,11 +27,7 @@ class Comparator:
 class Part:
 
     def __init__(self, x, m, a, s):
-        self.values = {}
-        self.values['x'] = x
-        self.values['m'] = m
-        self.values['a'] = a
-        self.values['s'] = s
+        self.values = {'x': x, 'm': m, 'a': a, 's': s}
 
     def __str__(self):
         return f"[x: {self.values['x']} m: {self.values['m']}, a: {self.values['a']}, s: {self.values['s']}]"
@@ -127,14 +123,10 @@ for each (workflow name w, comparator list comp_original) that leads to A
     for each (workflow name, comparator list comp_new) that leads to w
         if comp_new doesn't conflict with comp_original
             add comp_new to comps
-     
-# create list of workflows that lead to each 
-# find all the workflows that lead to A
-# create set of rules for getting to the A destination in that workflow
 '''
 
-class RangeTracker():
 
+class RangeTracker:
     def __init__(self, workflow_antecedent_chain):
         self.mins = {'x': 1, 'm': 1, 'a': 1, 's': 1}
         self.maxs = {'x': 4000, 'm': 4000, 'a': 4000, 's': 4000}
